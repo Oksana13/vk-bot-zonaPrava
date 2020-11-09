@@ -1,0 +1,66 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "es2017": true,
+      "node": true
+  },
+  "rules": {
+    "default-param-last": ["warn"],
+    "comma-dangle": [
+      "warn",
+      "always-multiline"
+    ],
+    "curly": ["error", "all"],
+    "indent": ["warn", 2, {
+      "SwitchCase": 1
+    }],
+    "linebreak-style": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-underscore-dangle": ["error", {
+      "allow": ["_setOptions", "_create", "_super", "__svg__", "_events"],
+      "allowAfterThis": true
+    }],
+    "no-param-reassign": ["error", { "props": false }],
+    "object-shorthand": "off",
+    "no-plusplus": "off",
+    "func-names": ["error", "never"],
+    "vars-on-top": ["error"],
+    "jsx-a11y/no-static-element-interactions": ["off"],
+    "no-restricted-globals": ["warn"],
+    "function-paren-newline": ["off"],
+    "prefer-destructuring": [
+      "warn",
+      {
+        "object": true,
+        "array": false
+      }
+    ],
+    "no-unused-vars": [
+      "warn"
+    ],
+    "prefer-promise-reject-errors": ["off"],
+    "object-curly-newline": ["off"],
+    "no-trailing-spaces": ["warn"],
+    "no-multi-spaces": ["warn"],
+    "semi-style": ["warn"],
+    "no-mixed-spaces-and-tabs": [1],
+    "no-tabs": [1],
+    "class-methods-use-this": [0],
+    "no-multiple-empty-lines": [1],
+    "operator-linebreak": [
+      "warn",
+      "after",
+      {
+        "overrides": {
+          "?": "before",
+          ":": "before",
+          "||": "before",
+          "&&": "before"
+        }
+      }
+    ]
+  }
+}

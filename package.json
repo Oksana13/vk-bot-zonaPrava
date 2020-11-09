@@ -1,0 +1,23 @@
+{
+  "name": "zona-prava-vk-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app": "npx nodemon ./src/index.js"
+  },
+  "author": "Oksana Klimova",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-generator": "^4.16.1",
+    "node-telegram-bot-api": "^0.50.0",
+    "node-vk-bot-api": "^3.3.7",
+    "universal-analytics": "^0.4.23"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.9.0",
+    "nodemon": "^2.0.4"
+  }
+}
