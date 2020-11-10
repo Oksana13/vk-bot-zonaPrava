@@ -25,7 +25,7 @@ function linkToSite(link) {
   ]
 }
 
-function continiuReading(button) {
+function continueReading(button) {
   return [
     Markup.button({
       action: {
@@ -40,105 +40,115 @@ function continiuReading(button) {
 }
 
 function instructionKeyboard(link, button) {
+  const defaultBns = [
+    kb.backToInstructions,
+    linkToSite(link),
+    kb.backButton,
+  ];
+
   if (button) {
     return [
-      continiuReading(button),
-      kb.backToInstructions,
-      linkToSite(link),
-      kb.backButton,
+      continueReading(button),
+      ...defaultBns,
     ]
   } else {
-    return [
-      kb.backToInstructions,
-      linkToSite(link),
-      kb.backButton,
-    ]
+    return defaultBns
   }
+}
+
+function reply(ctx, text, link, part) {
+  ctx.reply(text, null, Markup
+    .keyboard(
+      instructionKeyboard(link, part),
+    ),
+  );
+}
+
+function showInstructionOne(ctx, instructionPart) {
+  switch (instructionPart) {
+    case 1:
+      reply(ctx, instructions.INSTRUCTION_1_PART_1, LINKS.SAFETY_PLAN, l10n.INSTRUCTION_1_PART_2);
+      break;
+
+    case 2:
+      reply(ctx, instructions.INSTRUCTION_1_PART_2, LINKS.SAFETY_PLAN, l10n.INSTRUCTION_1_PART_3);
+      break;
+
+    case 3:
+      reply(ctx, instructions.INSTRUCTION_1_PART_3, LINKS.SAFETY_PLAN);
+      break;
+
+    default:
+      break;
+  }
+}
+
+function showInstructionTwo(ctx, instructionPart) {
+  switch (instructionPart) {
+    case 1:
+      reply(ctx, instructions.INSTRUCTION_2_PART_1, LINKS.PHISICAL_VIOLENCE, l10n.INSTRUCTION_2_PART_2);
+      break;
+
+    case 2:
+      reply(ctx, instructions.INSTRUCTION_2_PART_2, LINKS.PHISICAL_VIOLENCE);
+      break;
+
+    default:
+      break;
+  }
+}
+
+function showInstructionThree(ctx, instructionPart) {
+  switch (instructionPart) {
+    case 1:
+      reply(ctx, instructions.INSTRUCTION_3_PART_1, LINKS.SEXUAL_VIOLENCE, l10n.INSTRUCTION_3_PART_2);
+      break;
+
+    case 2:
+      reply(ctx, instructions.INSTRUCTION_3_PART_2, LINKS.SEXUAL_VIOLENCE);
+      break;
+
+    default:
+      break;
+  }
+}
+
+function showInstructionFour(ctx) {
+  reply(ctx, instructions.INSTRUCTION_4, LINKS.RULES_SENDING_APPLICATION);
 }
 
 module.exports = {
   async instructionsHandler (ctx) {
-    // analytics('/instructions', 'Инструкции');
+    analytics('/instructions', 'Инструкции');
     ctx.reply('Выберите инструкцию:', null, Markup
       .keyboard(kb.instructions, { columns: 1 }),
     );
   },
 
-  onShowInstruction_1(ctx, instructionNumber) {
+  showInstruction(ctx, instructionNumber, instructionPart) {
     switch (instructionNumber) {
       case 1:
-        ctx.reply(instructions.INSTRUCTION_1_PART_1, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.SAFETY_PLAN, l10n.INSTRUCTION_1_PART_2),
-          ),
-        );
+        analytics('/instruction1', 'План безопасности');
+        showInstructionOne(ctx, instructionPart);
         break;
+
       case 2:
-        ctx.reply(instructions.INSTRUCTION_1_PART_2, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.SAFETY_PLAN, l10n.INSTRUCTION_1_PART_3),
-          ),
-        );
+        analytics('/instruction2', 'Что делать, если вы пострадали от физического насилия?');
+        showInstructionTwo(ctx, instructionPart);
         break;
+
       case 3:
-        ctx.reply(instructions.INSTRUCTION_1_PART_3, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.SAFETY_PLAN),
-          ),
-        );
+        analytics('/instruction3', 'Что делать, если вы пострадали от сексуализированного насилия?');
+        showInstructionThree(ctx, instructionPart);
         break;
+
+      case 4:
+        analytics('/instruction4', 'Как правильно подавать заявления и вести свое дело');
+        showInstructionFour(ctx, instructionPart);
+        break;
+
       default:
         break;
     }
-  },
-
-  onShowInstruction_2(ctx, instructionNumber) {
-    switch (instructionNumber) {
-      case 1:
-        ctx.reply(instructions.INSTRUCTION_2_PART_1, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.PHISICAL_VIOLENCE, l10n.INSTRUCTION_2_PART_2),
-          ),
-        );
-        break;
-      case 2:
-        ctx.reply(instructions.INSTRUCTION_2_PART_2, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.PHISICAL_VIOLENCE),
-          ),
-        );
-        break;
-      default:
-        break;
-    }
-  },
-
-  onShowInstruction_3(ctx, instructionNumber) {
-    switch (instructionNumber) {
-      case 1:
-        ctx.reply(instructions.INSTRUCTION_3_PART_1, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.SEXUAL_VIOLENCE, l10n.INSTRUCTION_3_PART_2),
-          ),
-        );
-        break;
-      case 2:
-        ctx.reply(instructions.INSTRUCTION_3_PART_2, null, Markup
-          .keyboard(
-            instructionKeyboard(LINKS.SEXUAL_VIOLENCE),
-          ),
-        );
-        break;
-      default:
-        break;
-    }
-  },
-
-  onShowInstruction_4(ctx) {
-    ctx.reply(instructions.INSTRUCTION_4, null, Markup
-      .keyboard(
-        instructionKeyboard(LINKS.RULES_SENDING_APPLICATION),
-      ),
-    );
   },
 };

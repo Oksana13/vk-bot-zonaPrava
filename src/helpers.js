@@ -3,17 +3,8 @@ const kb = require ('./keyboard-buttons');
 const { l10n } = require ('./constants');
 
 module.exports = {
-  debug(obj = {}) {
-    return JSON.stringify(obj, null, 4);
-  },
-
   parseText(text) {
     return text.trim().toLowerCase();
-  },
-
-  getChatId(message) {
-    console.log(message)
-    return message.message.id
   },
 
   backToMainMenu(ctx) {
