@@ -4,10 +4,10 @@ const kb = require ('./keyboard-buttons');
 const { analytics } = require ('./analytics');
 
 const LINKS = {
-  SAFETY_PLAN: 'https://zonaprava.com/domestic-violence/instructions/safe-plan.php',
-  PHISICAL_VIOLENCE: 'https://zonaprava.com/domestic-violence/instructions/physical-violence.php',
-  SEXUAL_VIOLENCE: 'https://zonaprava.com/domestic-violence/instructions/sexualized-violence.php',
-  RULES_SENDING_APPLICATION: 'https://zonaprava.com/domestic-violence/instructions/correct-application.php',
+  SAFETY_PLAN: 'https://zonaprava.com/domestic-violence/instructions/safe-plan.php/?utm_source=vk',
+  PHISICAL_VIOLENCE: 'https://zonaprava.com/domestic-violence/instructions/physical-violence.php/?utm_source=vk',
+  SEXUAL_VIOLENCE: 'https://zonaprava.com/domestic-violence/instructions/sexualized-violence.php/?utm_source=vk',
+  RULES_SENDING_APPLICATION: 'https://zonaprava.com/domestic-violence/instructions/correct-application.php/?utm_source=vk',
 };
 
 function linkToSite(link) {
