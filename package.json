@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "app": "npx nodemon ./src/index.js"
   },
   "author": "Oksana Klimova",
@@ -17,7 +18,11 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "eslint": "^7.9.0",
+    "eslint": "^7.13.0",
+    "minimist": "^0.2.1",
     "nodemon": "^2.0.4"
+  },
+  "resolutions": {
+    "minimist": "^0.2.1"
   }
 }
