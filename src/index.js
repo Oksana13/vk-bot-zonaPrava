@@ -5,9 +5,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const VkBot = require('node-vk-bot-api');
 const Markup = require('node-vk-bot-api/lib/markup');
+const Session = require('node-vk-bot-api/lib/session');
+const Stage = require('node-vk-bot-api/lib/stage');
+const Scene = require('node-vk-bot-api/lib/scene');
 
 const { instructionsHandler, showInstruction } = require('./instructions');
-const { helpMapHandler, showFederalCenters, searchRegion } = require('./helpMap');
+const { showFederalCenters, searchRegion } = require('./helpMap');
 const kb = require ('./keyboard-buttons');
 const { mainMenuHandler } = require ('./helpers');
 const { analytics } = require ('./analytics');
@@ -34,7 +37,27 @@ bot.command(l10n.start, async ctx => {
   }
 });
 
-const REGION_REG_EXP = /^[а-яА-ЯЁё0-9 ]+$/;
+// handle region search
+try {
+  const session = new Session();
+  const scene = new Scene('helpMap',
+    (ctx) => {
+      ctx.scene.next();
+      ctx.reply('Укажите название или номер вашего региона');
+    },
+    (ctx) => {
+      const message = ctx.message.body;
+
+      searchRegion(message, ctx);
+      ctx.scene.leave();
+    });
+  const stage = new Stage(scene);
+
+  bot.use(session.middleware());
+  bot.use(stage.middleware());
+} catch (error) {
+  console.error('Ошибка во время обработки кнопки карты помощи', error);
+}
 
 bot.event('message_new', async (ctx) => {
   const { message } = ctx;
@@ -48,7 +71,11 @@ bot.event('message_new', async (ctx) => {
           mainMenuHandler(ctx);
           break;
         case l10n.helpMap:
-          helpMapHandler(ctx, bot);
+          analytics('/helpmap', 'Карта помощи');
+          ctx.scene.enter('helpMap');
+          break;
+        case l10n.newSearch:
+          ctx.scene.enter('helpMap');
           break;
         case l10n.legalHelp:
           analytics('/legalhelp', 'Помощь юристов');
@@ -92,7 +119,5 @@ bot.event('message_new', async (ctx) => {
     } catch (error) {
       console.error(`Ошибка при команде ${buttonType}`, error);
     }
-  } else if (REGION_REG_EXP.test(message.body)){
-    searchRegion(message.body, ctx);
   }
 });

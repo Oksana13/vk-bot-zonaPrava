@@ -1,6 +1,6 @@
 const mapJson = require('./map.json');
 const { parseText } = require('./helpers');
-const { analytics, eventAnalytics } = require ('./analytics');
+const { eventAnalytics } = require ('./analytics');
 const kb = require ('./keyboard-buttons');
 const Markup = require('node-vk-bot-api/lib/markup');
 
@@ -56,15 +56,6 @@ module.exports = {
         Введите номер или название региона.`)
 
       showFederalCentersBtn(ctx);
-    }
-  },
-
-  async helpMapHandler(ctx) {
-    analytics('/helpmap', 'Карта помощи');
-    try {
-      await ctx.reply('Укажите название или номер вашего региона');
-    } catch (error) {
-      console.error('Ошибка во время обработки кнопки карты помощи', error);
     }
   },
 
